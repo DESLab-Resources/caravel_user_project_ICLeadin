@@ -1,8 +1,8 @@
-CARAVEL_ROOT: /usr/caravel_user_project/caravel
-MCW_ROOT: /usr/caravel_user_project/mgmt_core_wrapper
+CARAVEL_ROOT: /home/icuser/caravel_user_project_ICLeadin/caravel
+MCW_ROOT: /home/icuser/caravel_user_project_ICLeadin/mgmt_core_wrapper
 PDK: sky130A
-PDK_ROOT: /usr/pdk
-USER_PROJECT_ROOT: /usr/caravel_user_project
+PDK_ROOT: /home/icuser/caravel_user_project_ICLeadin/dependencies/pdks
+USER_PROJECT_ROOT: /home/icuser/caravel_user_project_ICLeadin
 caravan: false
 clk: 25
 emailto:
