@@ -17,7 +17,7 @@ MAKEFLAGS+=--warn-undefined-variables
 
 export CARAVEL_ROOT?=$(PWD)/caravel
 export UPRJ_ROOT?=$(PWD)
-PRECHECK_ROOT?=${HOME}/mpw_precheck
+PRECHECK_ROOT?=${PWD}/mpw_precheck
 export MCW_ROOT?=$(PWD)/mgmt_core_wrapper
 SIM?=RTL
 
@@ -99,12 +99,14 @@ endif
 
 .PHONY: install
 install:
-	if [ -d "$(CARAVEL_ROOT)" ]; then\
-		echo "Deleting exisiting $(CARAVEL_ROOT)" && \
-		rm -rf $(CARAVEL_ROOT) && sleep 2;\
-	fi
+	#if [ -d "$(CARAVEL_ROOT)" ]; then\
+	#	echo "Deleting exisiting $(CARAVEL_ROOT)" && \
+	#	rm -rf $(CARAVEL_ROOT) && sleep 2;\
+	#fi
 	echo "Installing $(CARAVEL_NAME).."
-	git clone -b $(CARAVEL_TAG) $(CARAVEL_REPO) $(CARAVEL_ROOT) --depth=1
+	# git submodule add -b $(CARAVEL_TAG) --depth=1 $(CARAVEL_REPO) $(CARAVEL_ROOT)
+	git submodule add --force --depth=1 $(CARAVEL_REPO) $(CARAVEL_ROOT)
+	(cd $(CARAVEL_ROOT) && git checkout tags/$(CARAVEL_TAG))
 
 # Install DV setup
 .PHONY: simenv
@@ -118,6 +120,9 @@ simenv-cocotb:
 
 .PHONY: setup
 setup: check_dependencies install check-env install_mcw openlane pdk-with-volare setup-timing-scripts setup-cocotb precheck
+
+.PHONY: setup_lite
+setup_lite: check_dependencies install check-env openlane pdk-with-volare
 
 # Openlane
 blocks=$(shell cd openlane && find * -maxdepth 0 -type d)
@@ -238,12 +243,12 @@ uninstall:
 # Default installs to the user home directory, override by "export PRECHECK_ROOT=<precheck-installation-path>"
 .PHONY: precheck
 precheck:
-	if [ -d "$(PRECHECK_ROOT)" ]; then\
-		echo "Deleting exisiting $(PRECHECK_ROOT)" && \
-		rm -rf $(PRECHECK_ROOT) && sleep 2;\
-	fi
-	@echo "Installing Precheck.."
-	@git clone --depth=1 --branch $(MPW_TAG) https://github.com/efabless/mpw_precheck.git $(PRECHECK_ROOT)
+	#if [ -d "$(PRECHECK_ROOT)" ]; then\
+	#	echo "Deleting exisiting $(PRECHECK_ROOT)" && \
+	#	rm -rf $(PRECHECK_ROOT) && sleep 2;\
+	#fi
+	@echo  "Installing Precheck.."
+	@git submodule add --force --depth=1 --branch $(MPW_TAG) https://github.com/efabless/mpw_precheck.git $(PRECHECK_ROOT)
 	@docker pull efabless/mpw_precheck:latest
 
 .PHONY: run-precheck
@@ -333,7 +338,7 @@ timing-scripts-repo=https://github.com/efabless/timing-scripts.git
 
 $(TIMING_ROOT):
 	@mkdir -p $(CUP_ROOT)/dependencies
-	@git clone $(timing-scripts-repo) $(TIMING_ROOT)
+	@git submodule add --force $(timing-scripts-repo) $(TIMING_ROOT)
 
 .PHONY: setup-timing-scripts
 setup-timing-scripts: $(TIMING_ROOT)
@@ -385,7 +390,7 @@ create-spef-mapping: ./verilog/gl/user_project_wrapper.v
 		-v $(PDK_ROOT):$(PDK_ROOT) \
 		-v $(CUP_ROOT):$(CUP_ROOT) \
 		-v $(CARAVEL_ROOT):$(CARAVEL_ROOT) \
-		-v $(MCW_ROOT):$(MCW_ROOT) \
+		-v $( MCW_ROOT):$(MCW_ROOT) \
 		-v $(TIMING_ROOT):$(TIMING_ROOT) \
 		-w $(shell pwd) \
 		efabless/timing-scripts:latest \

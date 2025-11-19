@@ -16,7 +16,7 @@
 MAKEFLAGS+=--warn-undefined-variables
 
 export OPENLANE_RUN_TAG = $(shell date '+%y_%m_%d_%H_%M')
-OPENLANE_TAG ?= 2023.07.19-1
+OPENLANE_TAG ?= 2023.07.19-1-dbus
 OPENLANE_IMAGE_NAME ?= efabless/openlane:$(OPENLANE_TAG)
 designs = $(shell find * -maxdepth 0 -type d)
 current_design = null
@@ -91,11 +91,11 @@ enable-openlane-pdk:
 
 .PHONY: openlane
 openlane: check-openlane-env
-	if [ -d "$(OPENLANE_ROOT)" ]; then\
-		echo "Deleting exisiting $(OPENLANE_ROOT)" && \
-		rm -rf $(OPENLANE_ROOT) && sleep 2; \
-		fi
-	git clone https://github.com/The-OpenROAD-Project/OpenLane -b $(OPENLANE_TAG) --depth=1 $(OPENLANE_ROOT) && \
+	#if [ -d "$(OPENLANE_ROOT)" ]; then\
+	#	echo "Deleting exisiting $(OPENLANE_ROOT)" && \
+	#	rm -rf $(OPENLANE_ROOT) && sleep 2; \
+	#	fi
+	git submodule add --force --depth=1 -b $(OPENLANE_TAG)-dbus https://github.com/DESLab-Resources/OpenLane $(OPENLANE_ROOT) && \
 		cd $(OPENLANE_ROOT) && \
 		export OPENLANE_IMAGE_NAME=efabless/openlane:$(OPENLANE_TAG) && \
 		export IMAGE_NAME=efabless/openlane:$(OPENLANE_TAG) && \

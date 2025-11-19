@@ -8,7 +8,8 @@
 *.gtkw
 /env
 /venv*
-/caravel
-/dependencies
-/mgmt_core_wrapper
+#/caravel
+dependencies/*
+#/mgmt_core_wrapper
 /logs
+!dependencies/openlane_src

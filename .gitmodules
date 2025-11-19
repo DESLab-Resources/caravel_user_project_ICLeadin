@@ -1,0 +1,10 @@
+[submodule "/home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/caravel"]
+	path = /home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/caravel
+	url = https://github.com/efabless/caravel-lite
+[submodule "/home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/dependencies/timing-scripts"]
+	path = /home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/dependencies/timing-scripts
+	url = https://github.com/efabless/timing-scripts.git
+[submodule "/home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/dependencies/openlane_src"]
+	path = /home/icuser/ICLeadinDesign/caravel_user_project_ICLeadin/dependencies/openlane_src
+	url = https://github.com/DESLab-Resources/OpenLane
+	branch = 2023.07.19-1-dbus
